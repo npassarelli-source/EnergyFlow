@@ -40,6 +40,7 @@
         .text-shadow {
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
+        /* Adjusted widths to be more fluid */
         .pyramid-level {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -136,10 +137,16 @@
             color: #dc2626;
             border-color: #dc2626;
         }
+
+        /* NEW: Class to prevent FOUC (Flash of Unstyled Content) */
+        .hidden-initially {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div id="energy-pyramid-widget-container" class="antialiased font-sans">
+    <!-- The `hidden-initially` class is added here to hide the entire widget on load. -->
+    <div id="energy-pyramid-widget-container" class="antialiased font-sans hidden-initially">
         <!-- HTML structure -->
         <div class="container mx-auto p-4 md:p-8">
             <!-- Title and Introduction -->
@@ -151,64 +158,65 @@
             </div>
 
             <!-- Main Pyramid Container -->
-            <div id="pyramidContainer" class="flex flex-col items-center space-y-4 hidden">
+            <!-- The flex-col class stacks the levels on mobile. At the 'md' breakpoint, they become a row with md:flex-row. -->
+            <div id="pyramidContainer" class="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:items-end md:space-x-4 md:space-y-0 hidden">
                 
                 <!-- Tertiary Consumer Level with Button and Message Box -->
-                <div class="flex items-center space-x-4">
-                    <div id="tertiaryLevel" class="pyramid-level tertiary w-48 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
+                <div class="flex flex-col items-center w-full md:w-auto">
+                    <div id="tertiaryLevel" class="pyramid-level tertiary w-full md:w-48 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
                         <div class="mb-1 text-2xl">🦅</div>
                         <h2 class="text-base font-bold text-red-800">Tertiary Consumer (Eagle)</h2>
                         <p id="tertiaryEnergy" class="text-lg font-extrabold text-red-900 mt-1">???</p>
                     </div>
-                    <div class="flex-shrink-0 flex items-center space-x-2">
-                        <div id="tertiaryMessageBox" class="message-box hidden"></div>
-                        <button id="transferToTertiaryBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-32" disabled>
+                    <!-- Message box and button are now stacked vertically on small screens -->
+                    <div class="flex flex-col items-center w-full space-y-2 mt-4 md:mt-0 md:flex-row md:space-x-2 md:space-y-0 md:justify-center">
+                        <div id="tertiaryMessageBox" class="message-box hidden md:w-auto"></div>
+                        <button id="transferToTertiaryBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-full md:w-32" disabled>
                             Feed the Eagle!
                         </button>
                     </div>
                 </div>
 
                 <!-- Secondary Consumer Level with Button and Message Box -->
-                <div class="flex items-center space-x-4">
-                    <div id="secondaryLevel" class="pyramid-level secondary w-64 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
+                <div class="flex flex-col items-center w-full md:w-auto">
+                    <div id="secondaryLevel" class="pyramid-level secondary w-full md:w-64 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
                         <div class="mb-1 text-2xl">🐍</div>
                         <h2 class="text-base font-bold text-orange-800">Secondary Consumer (Snake)</h2>
                         <p id="secondaryEnergy" class="text-lg font-extrabold text-orange-900 mt-1">???</p>
                     </div>
-                    <div class="flex-shrink-0 flex items-center space-x-2">
-                        <div id="secondaryMessageBox" class="message-box hidden"></div>
-                        <button id="transferToSecondaryBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-32" disabled>
+                    <div class="flex flex-col items-center w-full space-y-2 mt-4 md:mt-0 md:flex-row md:space-x-2 md:space-y-0 md:justify-center">
+                        <div id="secondaryMessageBox" class="message-box hidden md:w-auto"></div>
+                        <button id="transferToSecondaryBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-full md:w-32" disabled>
                             Feed the Snake!
                         </button>
                     </div>
                 </div>
 
                 <!-- Primary Consumer Level with Button and Message Box -->
-                <div class="flex items-center space-x-4">
-                    <div id="primaryLevel" class="pyramid-level primary w-80 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
+                <div class="flex flex-col items-center w-full md:w-auto">
+                    <div id="primaryLevel" class="pyramid-level primary w-full md:w-80 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
                         <div class="mb-1 text-2xl">🐇</div>
                         <h2 class="text-base font-bold text-yellow-800">Primary Consumer (Rabbit)</h2>
                         <p id="primaryEnergy" class="text-lg font-extrabold text-yellow-900 mt-1">???</p>
                     </div>
-                    <div class="flex-shrink-0 flex items-center space-x-2">
-                        <div id="primaryMessageBox" class="message-box hidden"></div>
-                        <button id="transferToPrimaryBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-32" disabled>
+                    <div class="flex flex-col items-center w-full space-y-2 mt-4 md:mt-0 md:flex-row md:space-x-2 md:space-y-0 md:justify-center">
+                        <div id="primaryMessageBox" class="message-box hidden md:w-auto"></div>
+                        <button id="transferToPrimaryBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-full md:w-32" disabled>
                             Feed the Rabbit!
                         </button>
                     </div>
                 </div>
 
                 <!-- Producers Level with Button and Message Box -->
-                <!-- The message box is now placed back on the side to prevent vertical overflow -->
-                <div class="flex items-center space-x-4">
-                    <div id="producerLevel" class="pyramid-level producers w-96 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
+                <div class="flex flex-col items-center w-full md:w-auto">
+                    <div id="producerLevel" class="pyramid-level producers w-full md:w-96 h-28 rounded-lg p-3 flex flex-col justify-center items-center text-center">
                         <div class="mb-1 text-2xl animate-bounce-slow">🌻</div>
                         <h2 class="text-base font-bold text-green-800">Producers (Plants)</h2>
                         <p id="producerEnergy" class="text-lg font-extrabold text-green-900 mt-1">???</p>
                     </div>
-                    <div class="flex-shrink-0 flex items-center space-x-2">
-                        <div id="producerMessageBox" class="message-box hidden"></div>
-                        <button id="generateProducerBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-32" disabled>
+                    <div class="flex flex-col items-center w-full space-y-2 mt-4 md:mt-0 md:flex-row md:space-x-2 md:space-y-0 md:justify-center">
+                        <div id="producerMessageBox" class="message-box hidden md:w-auto"></div>
+                        <button id="generateProducerBtn" class="px-4 py-2 rounded-full text-white font-bold btn-green w-full md:w-32" disabled>
                             Generate Producers
                         </button>
                     </div>
@@ -217,7 +225,7 @@
             
             <!-- Main Action Buttons at bottom -->
             <div class="mt-8 flex flex-col items-center space-y-4">
-                <button id="resetBtn" class="px-4 py-2 rounded-full text-white font-bold btn-red w-32 hidden">
+                <button id="resetBtn" class="px-4 py-2 rounded-full text-white font-bold btn-red w-full md:w-32 hidden">
                     Reset
                 </button>
             </div>
@@ -234,7 +242,7 @@
                     In this simulation, we'll start with a large amount of solar energy captured by producers and see how little energy makes it to the top of the food chain.
                 </p>
                 <div class="text-center">
-                    <button id="introStartBtn" class="px-6 py-3 rounded-full text-white font-bold text-base btn-green w-56">
+                    <button id="introStartBtn" class="px-6 py-3 rounded-full text-white font-bold text-base btn-green w-full md:w-56">
                         Let's Begin!
                     </button>
                 </div>
@@ -251,7 +259,7 @@
                     <div id="answerButtons" class="flex flex-col w-full space-y-3">
                         <!-- Answer buttons will be dynamically added here -->
                     </div>
-                    <button id="nextQuestionBtn" class="px-6 py-3 rounded-full text-white font-bold btn-green w-56 mt-6 hidden">
+                    <button id="nextQuestionBtn" class="px-6 py-3 rounded-full text-white font-bold btn-green w-full md:w-56 mt-6 hidden">
                         Next Question
                     </button>
                 </div>
@@ -269,7 +277,7 @@
                     <div class="px-4 py-2 bg-gray-100 rounded-lg border border-gray-300 font-mono text-xl text-gray-800 inline-block mb-6">
                         <span id="passCode"></span>
                     </div>
-                    <button id="passResetBtn" class="px-6 py-3 rounded-full text-white font-bold btn-red w-48">
+                    <button id="passResetBtn" class="px-6 py-3 rounded-full text-white font-bold btn-red w-full md:w-48">
                         Done
                     </button>
                 </div>
@@ -278,7 +286,7 @@
                     <p class="text-xl text-gray-700 font-bold mb-4">You did not pass the quiz.</p>
                     <p id="failScore" class="text-lg text-gray-800 font-semibold mb-4"></p>
                     <p class="text-base text-gray-600 mb-6">No problem, you can try again! Let's go through the simulation one more time.</p>
-                    <button id="failRedoBtn" class="px-6 py-3 rounded-full text-white font-bold btn-red w-48">
+                    <button id="failRedoBtn" class="px-6 py-3 rounded-full text-white font-bold btn-red w-full md:w-48">
                         Redo Simulation
                     </button>
                 </div>
@@ -678,6 +686,8 @@
                 // Initial setup to ensure the app starts with the intro overlay
                 resetApp();
 
+                // NEW: Show the widget container after the JavaScript has completed its initial setup.
+                widgetContainer.classList.remove('hidden-initially');
             })();
         });
     </script>
