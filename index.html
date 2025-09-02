@@ -10,8 +10,6 @@
             width: 100%;
             margin: 0;
             padding: 0;
-            /* `height: 100%` is removed to allow content to dictate height */
-            /* `overflow: hidden` is removed to allow scrolling */
         }
         
         /* Scoped CSS for the widget container */
@@ -23,10 +21,10 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             max-width: 100%;
             overflow-x: hidden;
+            overflow-y: auto; /* This is the fix for vertical scrolling */
             color: #1a202c;
             line-height: 1.5;
             box-sizing: border-box;
-            /* `min-height: 100vh` is removed to fix the scrolling issue */
         }
 
         #energy-pyramid-widget-container * {
